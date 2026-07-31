@@ -1,5 +1,6 @@
 import express from "express";
 import authRoutes from "./modules/auth/auth.routes.js";
+import errorHandler from "./middleware/error.middleware.js";
 
 const app = express();
 
@@ -14,5 +15,9 @@ app.get("/", (req, res) => {
     message: "Welcome to CampusCare API",
   });
 });
+
+// Error Handling Middleware
+app.use(errorHandler);
+
 
 export default app;
