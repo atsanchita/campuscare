@@ -58,7 +58,13 @@ export const login = asyncHandler(async (req, res) => {
     const user = await loginUser(email, password);
     const token = generateToken(user._id);
 
-    res.status(200).json({
+    res.cookie("token", token,{
+        httpOnly: true, // Prevents client-side(browser) JavaScript from accessing the cookie
+        secure: false, // Set to true in production
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    })
+    .status(200).json({
         success: true,
         token,
         user: {
@@ -104,4 +110,12 @@ export const getMe = async (req, res) => {
     success: true,
     user: req.user,
   });
+};
+
+export const logout = (req, res) => {
+    res.clearCookie("token");
+    res.status(200).json({
+        success: true,
+        message: "Logged out successfully",
+    });
 };

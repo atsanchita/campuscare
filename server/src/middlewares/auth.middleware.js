@@ -1,22 +1,22 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 
+//verify the token and attach the user to the request object for further use in controllers.
 const protect = async (req, res, next) => {
   try {
-    // Read Authorization header
-    const authHeader = req.headers.authorization;
-    //Authorization: Bearer eyJhbGc...
+    const token = // Check for token in cookies or authorization header
+    req.cookies.token || (req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer ")
+      ? req.headers.authorization.split(" ")[1]
+      : null);
+  
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({
-        success: false,
-        message: "Not authorized",
-      });
-    }
-
-    // Extract token
-    const token = authHeader.split(" ")[1]; 
-    // authHeader format: "Bearer <token>", so we split by space and take the second part (the token itself). at index 1
+if (!token) {
+  return res.status(401).json({
+    success: false,
+    message: "Not authorized",
+  });
+}
 
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -37,7 +37,7 @@ const protect = async (req, res, next) => {
     req.user = user;
     //benefit: controllers use the user object without querying the database again.
 
-    next();
+    next(); // Call the next middleware or route handler, 
     
   } catch (error) {
     res.status(401).json({
