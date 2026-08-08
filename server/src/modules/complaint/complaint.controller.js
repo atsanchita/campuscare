@@ -1,5 +1,6 @@
 import asyncHandler from "../../utils/asyncHandler.js";
-import { createComplaint, getMyComplaints, getComplaintById, updateComplaint, deleteComplaint} from "./complaint.service.js";
+import { createComplaint, getMyComplaints, getComplaintById, updateComplaint,
+deleteComplaint, getAllComplaints, adminUpdateComplaint} from "./complaint.service.js";
 
 export const create = asyncHandler(async (req, res) => {
   const complaint = await createComplaint(
@@ -59,5 +60,28 @@ export const remove = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     message: "Complaint deleted successfully",
+  });
+});
+
+export const getAll = asyncHandler(async (req, res) => {
+  const complaints = await getAllComplaints();
+
+  res.status(200).json({
+    success: true,
+    count: complaints.length,
+    data: complaints,
+  });
+});
+
+export const adminUpdate = asyncHandler(async (req, res) => {
+  const complaint = await adminUpdateComplaint(
+    req.params.id,
+    req.body
+  );
+
+  res.status(200).json({
+    success: true,
+    message: "Complaint updated by admin",
+    data: complaint,
   });
 });

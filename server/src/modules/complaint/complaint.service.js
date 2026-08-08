@@ -87,3 +87,36 @@ export const deleteComplaint = async (complaintId, userId) => {
 
   return complaint;
 };
+
+export const getAllComplaints = async () => {
+  return await Complaint.find()
+    .populate("student", "name email")
+    .sort({ createdAt: -1 });
+};
+
+export const adminUpdateComplaint = async (
+  complaintId,
+  data
+) => {
+  const complaint = await Complaint.findById(complaintId);
+
+  if (!complaint) {
+    throw new ApiError(404, "Complaint not found");
+  }
+
+  const allowedFields = [
+    "status",
+    "priority",
+    "adminRemark",
+  ];
+
+  allowedFields.forEach((field) => {
+    if (data[field] !== undefined) {
+      complaint[field] = data[field];
+    }
+  });
+
+  await complaint.save();
+
+  return complaint;
+};
