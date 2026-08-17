@@ -18,15 +18,28 @@ export const getMyComplaints = async (userId) => {
   return complaints;
 };
 
-export const getComplaintById = async (complaintId, userId) => {
+export const getComplaintById = async (
+  complaintId,
+  userId,
+  userRole
+) => {
   const complaint = await Complaint.findById(complaintId);
 
   if (!complaint) {
     throw new ApiError(404, "Complaint not found");
   }
 
+  // Admin can view any complaint
+  if (userRole === "admin") {
+    return complaint;
+  }
+
+  // Students can view only their own complaints
   if (complaint.student.toString() !== userId.toString()) {
-    throw new ApiError(403, "You are not authorized to access this complaint");
+    throw new ApiError(
+      403,
+      "You are not authorized to access this complaint"
+    );
   }
 
   return complaint;

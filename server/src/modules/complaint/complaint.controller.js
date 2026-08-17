@@ -28,7 +28,8 @@ export const getMine = asyncHandler(async (req, res) => {
 export const getOne = asyncHandler(async (req, res) => {
   const complaint = await getComplaintById(
     req.params.id,
-    req.user._id
+    req.user._id,
+    req.user.role
   );
 
   res.status(200).json({
