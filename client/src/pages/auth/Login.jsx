@@ -20,22 +20,35 @@ function Login() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+  setLoading(true);
 
-    try {
-      await api.post("/auth/login", form);
+  try {
+    const response = await api.post("/auth/login", form);
+
+    const user = response.data.user;
+
+    if (user.role === "admin") {
+      navigate("/admin/dashboard");
+    } else {
       navigate("/dashboard");
-    } catch (error) {
-      setError(
-        error.response?.data?.message || "Login failed"
-      );
-    } finally {
-      setLoading(false);
     }
-  };
+  } catch (error) {
+    console.error(
+      "LOGIN ERROR:",
+      error.response?.data || error
+    );
+
+    setError(
+      error.response?.data?.message ||
+        "Login failed"
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="auth-page">
