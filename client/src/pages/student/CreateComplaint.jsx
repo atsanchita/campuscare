@@ -42,74 +42,171 @@ function CreateComplaint() {
   };
 
   return (
-    <div>
-      <h1>New Complaint</h1>
+    <div className="form-page">
 
-      {error && <p>{error}</p>}
+      {/* Header */}
+      <header className="dashboard-header">
+        <div className="brand">
+          <div className="brand-icon">C</div>
+          <span>CampusCare</span>
+        </div>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          name="title"
-          placeholder="Complaint title"
-          value={form.title}
-          onChange={handleChange}
-          required
-        />
-
-        <textarea
-          name="description"
-          placeholder="Describe the issue"
-          value={form.description}
-          onChange={handleChange}
-          required
-        />
-
-        <select
-          name="category"
-          value={form.category}
-          onChange={handleChange}
+        <button
+          className="logout-button"
+          onClick={() => navigate("/dashboard")}
         >
-          <option>Electrical</option>
-          <option>Plumbing</option>
-          <option>Classroom</option>
-          <option>Laboratory</option>
-          <option>Wi-Fi</option>
-          <option>Hostel</option>
-          <option>Library</option>
-          <option>Canteen</option>
-          <option>Parking</option>
-          <option>Cleanliness</option>
-          <option>Security</option>
-          <option>Others</option>
-        </select>
-
-        <select
-          name="priority"
-          value={form.priority}
-          onChange={handleChange}
-        >
-          <option>Low</option>
-          <option>Medium</option>
-          <option>High</option>
-          <option>Critical</option>
-        </select>
-
-        <input
-          name="location"
-          placeholder="Location"
-          value={form.location}
-          onChange={handleChange}
-          required
-        />
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Submitting..." : "Submit Complaint"}
+          ← Dashboard
         </button>
-      </form>
+      </header>
 
-      <button onClick={() => navigate("/dashboard")}>
-        Cancel
-      </button>
+      <main className="form-container">
+
+        <div className="form-heading">
+          <p className="welcome-label">Campus Support</p>
+
+          <h1>Submit a Complaint</h1>
+
+          <p>
+            Tell us about the issue and we'll make sure
+            it reaches the right people.
+          </p>
+        </div>
+
+        <div className="complaint-form-card">
+
+          {error && (
+            <div className="error">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+
+            {/* Title */}
+            <div className="form-group">
+              <label htmlFor="title">
+                Complaint Title
+              </label>
+
+              <input
+                id="title"
+                name="title"
+                placeholder="e.g. Broken fan in classroom"
+                value={form.title}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Description */}
+            <div className="form-group">
+              <label htmlFor="description">
+                Description
+              </label>
+
+              <textarea
+                id="description"
+                name="description"
+                placeholder="Describe the problem in detail..."
+                value={form.description}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Category + Priority */}
+            <div className="form-row">
+
+              <div className="form-group">
+                <label htmlFor="category">
+                  Category
+                </label>
+
+                <select
+                  id="category"
+                  name="category"
+                  value={form.category}
+                  onChange={handleChange}
+                >
+                  <option>Electrical</option>
+                  <option>Plumbing</option>
+                  <option>Classroom</option>
+                  <option>Laboratory</option>
+                  <option>Wi-Fi</option>
+                  <option>Hostel</option>
+                  <option>Library</option>
+                  <option>Canteen</option>
+                  <option>Parking</option>
+                  <option>Cleanliness</option>
+                  <option>Security</option>
+                  <option>Others</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="priority">
+                  Priority
+                </label>
+
+                <select
+                  id="priority"
+                  name="priority"
+                  value={form.priority}
+                  onChange={handleChange}
+                >
+                  <option>Low</option>
+                  <option>Medium</option>
+                  <option>High</option>
+                  <option>Critical</option>
+                </select>
+              </div>
+
+            </div>
+
+            {/* Location */}
+            <div className="form-group">
+              <label htmlFor="location">
+                Location
+              </label>
+
+              <input
+                id="location"
+                name="location"
+                placeholder="e.g. Block A, Room 204"
+                value={form.location}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Actions */}
+            <div className="form-actions">
+
+              <button
+                type="button"
+                className="cancel-button"
+                onClick={() => navigate("/dashboard")}
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                className="primary-button"
+                disabled={loading}
+              >
+                {loading
+                  ? "Submitting..."
+                  : "Submit Complaint"}
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </main>
     </div>
   );
 }
