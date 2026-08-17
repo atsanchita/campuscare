@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api/v1",
+  baseURL: "https://campuscare-api-43wl.onrender.com/api/v1",
   withCredentials: true, // send cookies with requests
 });
 
