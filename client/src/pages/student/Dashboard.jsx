@@ -27,6 +27,15 @@ function Dashboard() {
     loadDashboard();
   }, []);
 
+  const handleLogout = async () => {
+  try {
+    await api.post("/auth/logout");
+    navigate("/login");
+  } catch (error) {
+    console.error("Logout failed", error);
+  }
+};
+
   const getStatusClass = (status) => {
     switch (status?.toLowerCase()) {
       case "resolved":
@@ -87,12 +96,12 @@ function Dashboard() {
           </div>
         </div>
 
-        <button
-          className="logout-button"
-          onClick={() => navigate("/login")}
-        >
-          Logout
-        </button>
+<button
+  className="logout-button"
+  onClick={handleLogout}
+>
+  Logout
+</button>
       </header>
 
       <main className="dashboard-container">
